@@ -1,0 +1,12 @@
+.direnv
+node_modules
+.next
+*.db
+*.db-journal
+**/.env
+**/.env*.local
+**/.env.*
+!**/.env.example
+!**/.env.*.example
+server/public/uploads/
+tsconfig.tsbuildinfo

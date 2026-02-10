@@ -1,0 +1,6 @@
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+
+patchedDependencies:
+  '@libsql/client@0.15.15': patches/@libsql__client@0.15.15.patch

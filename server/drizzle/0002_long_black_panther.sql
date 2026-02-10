@@ -1,0 +1,1 @@
+ALTER TABLE `canvas` ADD `composited_at` text;

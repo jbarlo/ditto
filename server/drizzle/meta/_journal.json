@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1768024238340,
+      "tag": "0000_keen_wild_child",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1768031131714,
+      "tag": "0001_simple_imperial_guard",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1768032217467,
+      "tag": "0002_long_black_panther",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1770183699586,
+      "tag": "0003_smart_starjammers",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1770453851950,
+      "tag": "0004_perfect_rattler",
+      "breakpoints": true
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+diff --git a/lib-cjs/sqlite3.js b/lib-cjs/sqlite3.js
+index 8527e6190ea92dc2c832049bf2c8862e81f36c2b..d3da8ba4fc960e4a671562baf6b5240b2c9f220a 100644
+--- a/lib-cjs/sqlite3.js
++++ b/lib-cjs/sqlite3.js
+@@ -150,7 +150,10 @@ class Sqlite3Client {
+     async transaction(mode = "write") {
+         const db = this.#getDb();
+         executeStmt(db, (0, util_1.transactionModeToBegin)(mode), this.#intMode);
+-        this.#db = null; // A new connection will be lazily created on next use
++        // https://github.com/tursodatabase/libsql-client-ts/issues/229
++        if (!this.#path.includes(":memory:")) {
++            this.#db = null;
++        }
+         return new Sqlite3Transaction(db, this.#intMode);
+     }
+     async executeMultiple(sql) {
+diff --git a/lib-esm/sqlite3.js b/lib-esm/sqlite3.js
+index d9a4f0136804059b31105e977eaeb953f521abdd..4e8e6c5b64c0b7ffe5a2c3270ee01b9101b99b6a 100644
+--- a/lib-esm/sqlite3.js
++++ b/lib-esm/sqlite3.js
+@@ -128,7 +128,10 @@ export class Sqlite3Client {
+     async transaction(mode = "write") {
+         const db = this.#getDb();
+         executeStmt(db, transactionModeToBegin(mode), this.#intMode);
+-        this.#db = null; // A new connection will be lazily created on next use
++        // https://github.com/tursodatabase/libsql-client-ts/issues/229
++        if (!this.#path.includes(":memory:")) {
++            this.#db = null;
++        }
+         return new Sqlite3Transaction(db, this.#intMode);
+     }
+     async executeMultiple(sql) {
