@@ -1,4 +1,4 @@
-# Ditto
+# Ditto E-Ink Server
 
 ![Display on table](assets/screen.jpeg)
 
@@ -105,7 +105,7 @@ pnpm db:push
 
 ## Frame Setup Guide
 
-1. Point the device firmware at your server instance
+1. Point the device firmware at your server instance (`<BASE_URL>/trmnl`)
    - on TRMNL devices, this may need reflashing. See the [TRMNL Firmware Repo](https://github.com/usetrmnl/trmnl-firmware) and [TRMNL BYOD Wiki page](https://docs.trmnl.com/go/diy/byod) for instructions.
 2. Your device should display a claim screen (see image below)
 3. Scan the QR code or navigate to the provided URL
@@ -113,6 +113,12 @@ pnpm db:push
 5. Your device should now be registered. It might need a restart to refresh the screen
 
 ![Device claim screen](assets/claim-image.png)
+
+> [!NOTE]
+> As of v1.7.3, setting the server URL on the TRMNL firmware can be slightly confusing:
+> 1. In the WiFi setup captured portal, click the "Advanced" button
+> 2. Then click "Custom Server", and "Yes" in the warning modal
+> 3. Fill in your API details, then click "Back to Wi-Fi" to finish filling out your network details
 
 ## Configuration
 
