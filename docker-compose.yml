@@ -1,9 +1,30 @@
 services:
   ditto:
-    build:
+    build: &build
       context: .
       dockerfile: server/Dockerfile
+    # tag image so migrate service can share
+    image: ditto
     ports:
       - "3000:3000"
     env_file:
       - server/.env.local
+    volumes:
+      - ditto-data:/app/data
+      - ditto-uploads:/app/public/uploads
+
+  migrate:
+    build: *build
+    # tagged to share image with main service
+    image: ditto
+    command: ["node", "migrate.mjs"]
+    env_file:
+      - server/.env.local
+    volumes:
+      - ditto-data:/app/data
+    profiles:
+      - migrate
+
+volumes:
+  ditto-data:
+  ditto-uploads:
