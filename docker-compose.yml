@@ -1,0 +1,9 @@
+services:
+  ditto:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - server/.env.local

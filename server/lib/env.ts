@@ -28,6 +28,17 @@ function require(name: string): string {
   return value ?? "";
 }
 
+function requireOneOf<T extends string>(name: string, options: readonly T[], fallback: T): T {
+  const value = process.env[name] ?? fallback;
+  if (!options.includes(value as T)) {
+    throw new Error(`${name} must be one of: ${options.join(", ")} (got "${value}")`);
+  }
+  return value as T;
+}
+
+const STORAGE_MODE = requireOneOf("STORAGE_MODE", ["local", "r2"] as const, "local");
+const DATABASE_MODE = requireOneOf("DATABASE_MODE", ["local", "turso"] as const, "local");
+
 export const env = {
   BASE_URL: requireUrl("BASE_URL")!,
   R2_PUBLIC_URL: requireUrl("R2_PUBLIC_URL", false),
@@ -43,6 +54,8 @@ export const env = {
   CLAIM_SECRET: require("CLAIM_SECRET"),
 
   isProduction: process.env.NODE_ENV === "production",
+  storageMode: STORAGE_MODE,
+  databaseMode: DATABASE_MODE,
 
   get isR2Configured() {
     return !!(
@@ -58,14 +71,14 @@ export const env = {
   },
 };
 
-if (env.isProduction && !env.isR2Configured) {
-  throw new Error("R2 storage must be configured in production");
+if (STORAGE_MODE === "r2" && !env.isR2Configured) {
+  throw new Error("R2 storage vars are required when STORAGE_MODE=r2");
 }
 
 if (env.isR2Configured && !env.R2_PUBLIC_URL) {
   throw new Error("R2_PUBLIC_URL is required when R2 storage is configured");
 }
 
-if (env.isProduction && !env.isTursoConfigured) {
-  throw new Error("Turso database must be configured in production");
+if (DATABASE_MODE === "turso" && !env.isTursoConfigured) {
+  throw new Error("Turso vars are required when DATABASE_MODE=turso");
 }

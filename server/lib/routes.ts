@@ -7,7 +7,8 @@ type Route =
   | "/frame/:name"
   | "/canvas/:canvasId"
   | "/invite/:token"
-  | "/api/claim";
+  | "/api/claim"
+  | "/api/uploads/:id";
 
 type ExtractParams<T extends string> =
   T extends `${string}:${infer P}/${infer Rest}`

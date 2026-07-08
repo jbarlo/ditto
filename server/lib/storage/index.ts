@@ -6,7 +6,7 @@ import type { ImageStorage } from "./types";
 export type { ImageStorage } from "./types";
 
 export function createImageStorage(): ImageStorage {
-  return env.isR2Configured ? new R2ImageStorage() : new LocalImageStorage();
+  return env.storageMode === "r2" ? new R2ImageStorage() : new LocalImageStorage();
 }
 
 export const imageStorage = createImageStorage();
