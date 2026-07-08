@@ -1,10 +1,8 @@
 import { createClient, type Client } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
-import { migrate as drizzleMigrate } from "drizzle-orm/libsql/migrator";
 import * as schema from "./schema";
 import { env } from "@/lib/env";
-
-const MIGRATIONS_FOLDER = "./drizzle";
+import { runMigrations } from "./migrations";
 
 let client: Client | null = null;
 
@@ -32,19 +30,10 @@ export async function getDb(): Promise<Database> {
 
 export type Database = ReturnType<typeof drizzle<typeof schema>>;
 
-/** Enable FK constraints. Call once at startup. */
-export async function enableForeignKeys(
-  libsqlClient: Client = getLibsqlClient()
-): Promise<void> {
-  await libsqlClient.execute("PRAGMA foreign_keys = ON");
-}
-
 /** Run migrations. Call explicitly (CLI, CI/CD, etc). */
 export async function migrate(libsqlClient: Client): Promise<Database> {
-  const db = drizzle(libsqlClient, { schema });
-  await enableForeignKeys(libsqlClient);
-  await drizzleMigrate(db, { migrationsFolder: MIGRATIONS_FOLDER });
-  return db;
+  await runMigrations(libsqlClient);
+  return drizzle(libsqlClient, { schema });
 }
 
 /** Create an in-memory SQLite database with schema applied (for tests) */

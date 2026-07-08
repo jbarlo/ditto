@@ -2,7 +2,7 @@ node_modules
 server/node_modules
 server/.next
 server/.env*
-*.db
-*.db-journal
+**/*.db
+**/*.db-journal
 .git
 server/public/uploads/

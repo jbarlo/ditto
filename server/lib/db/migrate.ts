@@ -1,12 +1,16 @@
-import { migrate } from "drizzle-orm/libsql/migrator";
-import { getDb } from "./client";
+import { createClient } from "@libsql/client";
+import { runMigrations } from "./migrations";
 
-async function runMigrations() {
-  const db = await getDb();
+async function main() {
+  const url = process.env.TURSO_URL ?? "file:local.db";
+  const authToken = process.env.TURSO_AUTH_TOKEN;
 
   console.log("Running migrations...");
-  await migrate(db, { migrationsFolder: "./drizzle" });
-  console.log("Done.");
+  await runMigrations(createClient({ url, authToken }));
+  console.log("Migrations done.");
 }
 
-runMigrations().catch(console.error);
+main().catch((err) => {
+  console.error("Migration failed:", err);
+  process.exit(1);
+});

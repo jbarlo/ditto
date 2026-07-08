@@ -2,6 +2,7 @@
   "name": "ditto-eink",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.33.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -40,6 +41,7 @@
     "@types/react": "^19.0.0",
     "@vitejs/plugin-react": "^5.1.2",
     "drizzle-kit": "^0.30.0",
+    "esbuild": "^0.28.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.16"
