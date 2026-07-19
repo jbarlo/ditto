@@ -42,6 +42,28 @@ db-generate:
 db-prod-migrate:
     cd server && bash -c 'set -a && source .env.turso && pnpm db:migrate'
 
+# ============ Docker ============
+
+# Build the Docker image
+docker-build:
+    docker compose build
+
+# Run migrations in the container
+docker-migrate:
+    docker compose run --rm migrate
+
+# Start the server container
+docker-up:
+    docker compose up -d
+
+# Tail server container logs
+docker-logs:
+    docker compose logs -f
+
+# Stop containers
+docker-down:
+    docker compose down
+
 # ============ Device Simulation ============
 
 # Simulate device setup (first boot)

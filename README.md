@@ -27,6 +27,10 @@ Contributions welcome!
 
 ### Prerequisites
 
+- Docker
+
+or, run locally,
+
 - Node.js 22+
 - pnpm
 - optional: just
@@ -35,17 +39,27 @@ Alternatively, a Nix flake is included to bundle the pre-reqs for you if you're 
 
 ### Environment
 
-To start local development copy the env example files:
+To start copy the env example files:
 
 ```sh
 cp server/.env.example server/.env.local
+# if setting DATABASE_MODE=turso
 cp server/.env.turso.example server/.env.turso
 ```
 
-All environment variables will need to be filled out for a production build.
-This includes an unfortunate required dependency on WorkOS for auth.
-Fixing this is high on the list of to-dos.
-Feel free to fork!
+#### Configuration
+
+By default, Ditto stores image and application data locally.
+Environment variables control if an external service should be used instead:
+
+- `DATABASE_MODE`: `local` (default) or `turso`
+- `STORAGE_MODE`: `local` (default) or `r2`
+
+For the time being, Ditto's auth is tied pretty closely to WorkOS and doesn't
+manage identity data.
+
+The goal is to move away from mandatory external dependencies soon, but in the
+meantime the WorkOS-related variables in `.env.example` are necessary.
 
 ### Development
 
@@ -74,12 +88,37 @@ pnpm db:generate
 
 ### Production Builds
 
-Currently this project is tied pretty closely to its service providers:
+The Docker image is the easiest way to set up self-hosting.
+To build for a dedicated Nextjs target like Vercel, follow the local build
+instructions instead.
 
-- Cloudflare R2
-- Turso
-- Vercel
-- WorkOS
+#### Docker
+
+To run a Docker production build:
+
+```sh
+# Build the server/migration image
+docker compose build
+
+# NOTE: Make sure your env files under the server dir are populated before the
+# next step
+
+# Run migrations:
+docker compose run --rm migrate
+
+# Start the server:
+docker compose up
+```
+
+A build and migrate is needed for any update.
+
+> [!NOTE]
+> When using local storage/db modes (`STORAGE_MODE=local` and
+> `DATABASE_MODE=local` respectively), data is stored in the ditto-uploads and
+> ditto-data Docker volumes. If you want to avoid data loss, consider backups
+> or bind mounts.
+
+#### Local
 
 If you want to do your builds yourself, the important commands are:
 
@@ -89,18 +128,10 @@ pnpm install
 pnpm build
 ```
 
-Make schema changes to your prod db by sourcing server/.env.turso then either:
-
-run the migration steps
+Migrations are run with:
 
 ```sh
 pnpm db:migrate
-```
-
-or push your schema changes directly
-
-```sh
-pnpm db:push
 ```
 
 ## Frame Setup Guide
@@ -120,7 +151,7 @@ pnpm db:push
 > 2. Then click "Custom Server", and "Yes" in the warning modal
 > 3. Fill in your API details, then click "Back to Wi-Fi" to finish filling out your network details
 
-## Configuration
+## Device Configuration
 
 This server was originally built to doodle between two [Seeed Studio TRMNL 7.5" DIY Kits](https://www.seeedstudio.com/TRMNL-7-5-Inch-OG-DIY-Kit-p-6481.html).
 If your devices are different, you might need to adjust values in `server/lib/config.ts`.
@@ -129,7 +160,7 @@ If you find a specific device does or doesn't work with the config values availa
 
 ## Roadmap
 
-- Dockerfile and external dependency decoupling (auth, r2, db provider)
+- ~Dockerfile and~ external dependency decoupling (auth, ~r2, db provider~)
 - Support for multiple devices of different sizes
 - Album gallery mode
 

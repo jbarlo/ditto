@@ -4,12 +4,14 @@ import { getDb } from "@/lib/db/client";
 import { createDal } from "@/lib/db/dal";
 import { getClientIp } from "@/lib/api/ip";
 import { route } from "@/lib/routes";
+import { env } from "@/lib/env";
 
 export const CALLBACK_RATE_LIMIT = 10;
 export const CALLBACK_RATE_WINDOW = 60;
 
 const authHandler = handleAuth({
   returnPathname: route("/home"),
+  baseURL: env.BASE_URL,
   async onSuccess({ user }) {
     const dal = createDal(await getDb());
     await dal.upsertPerson(user.id, user.email);
