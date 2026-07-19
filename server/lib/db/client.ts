@@ -2,14 +2,14 @@ import { createClient, type Client } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 import * as schema from "./schema";
 import { env } from "@/lib/env";
-import { runMigrations } from "./migrations";
+import { DEFAULT_DB_URL, runMigrations } from "./migrations";
 
 let client: Client | null = null;
 
 export function getLibsqlClient(): Client {
   if (!client) {
     client = createClient({
-      url: env.TURSO_URL ?? "file:local.db",
+      url: env.TURSO_URL ?? DEFAULT_DB_URL,
       authToken: env.TURSO_AUTH_TOKEN,
     });
   }

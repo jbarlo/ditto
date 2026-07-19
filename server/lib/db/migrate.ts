@@ -1,8 +1,8 @@
 import { createClient } from "@libsql/client";
-import { runMigrations } from "./migrations";
+import { DEFAULT_DB_URL, runMigrations } from "./migrations";
 
 async function main() {
-  const url = process.env.TURSO_URL ?? "file:local.db";
+  const url = process.env.TURSO_URL ?? DEFAULT_DB_URL;
   const authToken = process.env.TURSO_AUTH_TOKEN;
 
   console.log("Running migrations...");

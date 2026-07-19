@@ -9,6 +9,8 @@ services:
       - "3000:3000"
     env_file:
       - server/.env.local
+      - path: server/.env.turso
+        required: false
     volumes:
       - ditto-data:/app/data
       - ditto-uploads:/app/public/uploads
@@ -20,6 +22,8 @@ services:
     command: ["node", "migrate.mjs"]
     env_file:
       - server/.env.local
+      - path: server/.env.turso
+        required: false
     volumes:
       - ditto-data:/app/data
     profiles:
